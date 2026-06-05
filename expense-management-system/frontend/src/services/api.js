@@ -41,4 +41,20 @@ export const updateExpenseStatus = async (expenseId, status) => {
   }
 }
 
+// PUT upload receipt for existing expense
+export const uploadReceiptForExpense = async (expenseId, file) => {
+  try {
+    const formData = new FormData()
+    formData.append('receipt', file)
+    const response = await api.put(`/expenses/${expenseId}/receipt`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to upload receipt')
+  }
+}
+
 export default api

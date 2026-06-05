@@ -112,3 +112,31 @@ export const updateExpenseStatus = (req, res) => {
     res.status(500).json({ message: 'Error updating status', error: error.message })
   }
 }
+
+// PUT upload receipt for existing expense
+export const uploadReceiptForExpense = (req, res) => {
+  try {
+    const { id } = req.params
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' })
+    }
+
+    const expenses = readExpenses()
+    const expenseIndex = expenses.findIndex(exp => exp.id === id)
+
+    if (expenseIndex === -1) {
+      return res.status(404).json({ message: 'Expense not found' })
+    }
+
+    expenses[expenseIndex].receipt = req.file.filename
+    writeExpenses(expenses)
+
+    res.json({
+      message: 'Receipt uploaded successfully',
+      expense: expenses[expenseIndex]
+    })
+  } catch (error) {
+    res.status(500).json({ message: 'Error uploading receipt', error: error.message })
+  }
+}

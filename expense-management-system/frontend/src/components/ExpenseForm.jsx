@@ -128,123 +128,156 @@ export default function ExpenseForm({ onExpenseAdded }) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Expense Submission Form</h2>
+    <div className="bg-white rounded-lg shadow-sm border border-slate-200">
+      <div className="px-8 py-6 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-slate-50">
+        <h2 className="text-xl font-bold text-slate-900">Submit Expense Claim</h2>
+        <p className="text-sm text-slate-600 mt-1">Fill in the details below to submit a new expense claim</p>
+      </div>
 
-      {/* Success Message */}
-      {successMessage && (
-        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-          <p className="text-green-700">{successMessage}</p>
-        </div>
-      )}
+      <div className="p-8">
+        {/* Success Message */}
+        {successMessage && (
+          <div className="mb-6 p-4 bg-emerald-50 border border-emerald-300 rounded-lg flex items-start gap-3">
+            <span className="text-xl mt-0.5">✓</span>
+            <div>
+              <p className="text-emerald-900 font-semibold text-sm">{successMessage}</p>
+              <p className="text-emerald-700 text-xs mt-1">Your expense has been added to the list</p>
+            </div>
+          </div>
+        )}
 
-      {/* Submit Error */}
-      {errors.submit && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-700">{errors.submit}</p>
-        </div>
-      )}
+        {/* Submit Error */}
+        {errors.submit && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-300 rounded-lg flex items-start gap-3">
+            <span className="text-xl mt-0.5">✕</span>
+            <div>
+              <p className="text-red-900 font-semibold text-sm">{errors.submit}</p>
+            </div>
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Date Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Date <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleInputChange}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.date ? 'border-red-500' : 'border-gray-300'
-            }`}
-          />
-          {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Date & Category Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Date Field */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-900 mb-2">
+                Expense Date <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                  errors.date ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-white'
+                }`}
+              />
+              {errors.date && <p className="text-red-600 text-xs mt-1.5 font-medium">{errors.date}</p>}
+            </div>
 
-        {/* Category Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Category <span className="text-red-500">*</span>
-          </label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.category ? 'border-red-500' : 'border-gray-300'
-            }`}
-          >
-            <option value="">Select a category</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-          {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
-        </div>
+            {/* Category Field */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-900 mb-2">
+                Category <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                  errors.category ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-white'
+                }`}
+              >
+                <option value="">Choose a category</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+              {errors.category && <p className="text-red-600 text-xs mt-1.5 font-medium">{errors.category}</p>}
+            </div>
+          </div>
 
-        {/* Amount Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Amount <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="amount"
-            value={formData.amount}
-            onChange={handleInputChange}
-            placeholder="0.00"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.amount ? 'border-red-500' : 'border-gray-300'
-            }`}
-          />
-          {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount}</p>}
-        </div>
+          {/* Amount & Receipt Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Amount Field */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-900 mb-2">
+                Amount (₹) <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <span className="absolute left-4 top-2.5 text-slate-500 font-semibold">₹</span>
+                <input
+                  type="text"
+                  name="amount"
+                  value={formData.amount}
+                  onChange={handleInputChange}
+                  placeholder="0.00"
+                  className={`w-full pl-8 pr-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+                    errors.amount ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-white'
+                  }`}
+                />
+              </div>
+              {errors.amount && <p className="text-red-600 text-xs mt-1.5 font-medium">{errors.amount}</p>}
+            </div>
 
-        {/* Description Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Description <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            placeholder="Enter expense details"
-            rows="4"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
-              errors.description ? 'border-red-500' : 'border-gray-300'
-            }`}
-          />
-          {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
-        </div>
+            {/* Receipt Upload Field */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-900 mb-2">
+                Attach Receipt <span className="text-slate-400 font-normal">(Optional)</span>
+              </label>
+              <input
+                type="file"
+                id="receipt"
+                name="receipt"
+                onChange={handleFileChange}
+                accept=".pdf,.jpg,.jpeg,.png"
+                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-400 transition cursor-pointer text-sm text-slate-600 file:mr-3 file:px-3 file:py-1.5 file:border-0 file:bg-blue-50 file:text-blue-700 file:font-medium file:rounded file:cursor-pointer"
+              />
+              <p className="text-slate-500 text-xs mt-1.5">PDF, JPG, PNG • Up to 5MB</p>
+            </div>
+          </div>
 
-        {/* Receipt Upload Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Receipt Upload <span className="text-gray-500">(Optional)</span>
-          </label>
-          <input
-            type="file"
-            id="receipt"
-            name="receipt"
-            onChange={handleFileChange}
-            accept=".pdf,.jpg,.jpeg,.png"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <p className="text-gray-500 text-sm mt-1">Accepted formats: PDF, JPG, PNG (Max 5MB)</p>
-        </div>
+          {/* Description Field */}
+          <div>
+            <label className="block text-sm font-semibold text-slate-900 mb-2">
+              Description <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              placeholder="Enter expense details..."
+              rows="4"
+              className={`w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition ${
+                errors.description ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-white'
+              }`}
+            />
+            {errors.description && <p className="text-red-600 text-xs mt-1.5 font-medium">{errors.description}</p>}
+          </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
-        >
-          {loading ? 'Submitting...' : 'Submit Expense'}
-        </button>
-      </form>
+          {/* Submit Button */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2.5 px-6 rounded-lg transition duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md disabled:shadow-none"
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                <>Submit Claim</>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
